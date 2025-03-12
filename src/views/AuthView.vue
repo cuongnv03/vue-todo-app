@@ -1,25 +1,18 @@
 <template>
   <div class="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-200 to-purple-300">
     <transition name="fade" mode="out-in">
-      <div key="auth-card" class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md transform transition-all duration-300 hover:scale-105">
+      <div key="auth-card"
+        class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md transform transition-all duration-300 hover:scale-105">
         <h2 class="text-3xl font-bold mb-6 text-center text-blue-600">
           {{ isRegister ? 'Register' : 'Login' }}
         </h2>
         <form @submit.prevent="submit" class="flex flex-col gap-4">
-          <input
-            v-model="email"
-            type="email"
-            placeholder="Email"
+          <input v-model="email" type="email" placeholder="Email"
             class="border border-gray-300 rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-          <input
-            v-model="password"
-            type="password"
-            placeholder="Password"
+            required />
+          <input v-model="password" type="password" placeholder="Password"
             class="border border-gray-300 rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+            required />
           <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white rounded px-4 py-3 transition-colors">
             {{ isRegister ? 'Register' : 'Login' }}
           </button>
@@ -43,7 +36,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../firebase';
+import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../configs/firebase';
 
 const isRegister = ref(false);
 const email = ref('');
@@ -74,23 +67,29 @@ const submit = async () => {
 </script>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter-from, .fade-leave-to {
+
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
 .slide-fade-enter-active {
   transition: all 0.5s ease;
 }
+
 .slide-fade-enter-from {
   transform: translateY(-10px);
   opacity: 0;
 }
+
 .slide-fade-leave-active {
   transition: all 0.5s ease;
 }
+
 .slide-fade-leave-to {
   transform: translateY(-10px);
   opacity: 0;
