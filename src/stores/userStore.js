@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
-import { auth, onAuthStateChanged } from '../firebase';
+import { auth, onAuthStateChanged } from '../configs/firebase';
 
 export const useUserStore = defineStore('user', () => {
   const user = ref(null);

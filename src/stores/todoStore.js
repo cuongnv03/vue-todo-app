@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { db } from '../firebase';
+import { db } from '../configs/firebase';
 import {
   collection,
   addDoc,
