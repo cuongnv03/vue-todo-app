@@ -1,27 +1,27 @@
-import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import AuthView from "../views/AuthView.vue";
-import NotFoundView from "../views/NotFoundView.vue";
-import { getAuth } from "firebase/auth";
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import AuthView from '../views/AuthView.vue';
+import NotFoundView from '../views/NotFoundView.vue';
+import { getAuth } from 'firebase/auth';
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
+    path: '/',
+    name: 'Home',
     component: HomeView,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
-    path: "/auth",
-    name: "Auth",
+    path: '/auth',
+    name: 'Auth',
     component: AuthView,
-    meta: { requiresGuest: true }
+    meta: { requiresGuest: true },
   },
   {
-    path: "/:pathMatch(.*)*",
-    name: "NotFound",
-    component: NotFoundView
-  }
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFoundView,
+  },
 ];
 
 const router = createRouter({
@@ -31,14 +31,14 @@ const router = createRouter({
 
 // Chờ trạng thái xác thực được xác định trước khi chuyển hướng
 router.beforeEach(async (to, from, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  const requiresGuest = to.matched.some(record => record.meta.requiresGuest);
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const requiresGuest = to.matched.some((record) => record.meta.requiresGuest);
   const auth = getAuth();
 
   // Promise để chờ Firebase trả về trạng thái người dùng
   const getCurrentUser = () => {
     return new Promise((resolve, reject) => {
-      const unsubscribe = auth.onAuthStateChanged(user => {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
         unsubscribe();
         resolve(user);
       }, reject);
@@ -48,9 +48,9 @@ router.beforeEach(async (to, from, next) => {
   const user = await getCurrentUser();
 
   if (requiresAuth && !user) {
-    next({ name: "Auth" });
+    next({ name: 'Auth' });
   } else if (requiresGuest && user) {
-    next({ name: "Home" });
+    next({ name: 'Home' });
   } else {
     next();
   }

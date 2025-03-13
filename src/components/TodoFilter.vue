@@ -1,12 +1,7 @@
 <template>
   <div class="flex justify-center space-x-6 my-4">
-    <button
-      v-for="option in options"
-      :key="option.value"
-      @click="setFilter(option.value)"
-      :class="activeClass(option.value)"
-      class="px-4 py-2 focus:outline-none transition-colors"
-    >
+    <button v-for="option in options" :key="option.value" @click="setFilter(option.value)"
+      :class="activeClass(option.value)" class="px-4 py-2 focus:outline-none transition-colors">
       {{ option.label }}
     </button>
   </div>
