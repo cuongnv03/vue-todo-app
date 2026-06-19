@@ -1,4 +1,5 @@
 import Fastify from 'fastify'
+import cors from '@fastify/cors'
 import { AppError } from './utils/errors.js'
 
 import { jwtPlugin } from './plugins/jwt.js'
@@ -10,6 +11,10 @@ import { todoRoutes } from './routes/todo.routes.js'
 export async function buildApp() {
     const fastify = Fastify({
         logger: true
+    })
+
+    await fastify.register(cors, {
+        origin: true
     })
 
     await fastify.register(jwtPlugin)
