@@ -22,3 +22,18 @@ export function mapPublicUser(user) {
         username: user.username
     }
 }
+
+export function mapTodoRow(row) {
+    if (!row) {
+        return null
+    }
+
+    return {
+        id: row.id,
+        userId: row.user_id,
+        title: row.title,
+        isCompleted: Boolean(row.is_completed),
+        createdAt: new Date(row.created_at).toISOString(),
+        updatedAt: new Date(row.updated_at).toISOString()
+    }
+}

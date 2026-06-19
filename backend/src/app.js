@@ -5,6 +5,7 @@ import { jwtPlugin } from './plugins/jwt.js'
 import { authPlugin } from './plugins/auth.js'
 
 import { authRoutes } from './routes/auth.routes.js'
+import { todoRoutes } from './routes/todo.routes.js'
 
 export async function buildApp() {
     const fastify = Fastify({
@@ -43,6 +44,10 @@ export async function buildApp() {
 
     await fastify.register(authRoutes, {
         prefix: '/auth'
+    })
+
+    await fastify.register(todoRoutes, {
+        prefix: '/api/todos'
     })
 
     return fastify

@@ -35,7 +35,7 @@ export const getTodosSchema = {
     }
 }
 
-export const createTodosSchema = {
+export const createTodoSchema = {
     body: {
         type: 'object',
         required: ['title'],
