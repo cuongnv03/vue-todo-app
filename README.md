@@ -31,9 +31,10 @@ Database:
 - User-specific todos
 
 ## Main APIs
-POST    /auth/register
-POST    /auth/login
-GET     /api/todos
-POST    /api/todos
-PUT     /api/todos/:id
-DELETE  /api/todos/:id
+
+- POST    /auth/register
+- POST    /auth/login
+- GET     /api/todos
+- POST    /api/todos
+- PUT     /api/todos/:id
+- DELETE  /api/todos/:id
