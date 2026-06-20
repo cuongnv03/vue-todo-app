@@ -14,7 +14,9 @@ export async function buildApp() {
     })
 
     await fastify.register(cors, {
-        origin: true
+        origin: true,
+        methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization']
     })
 
     await fastify.register(jwtPlugin)
