@@ -1,5 +1,21 @@
 <script setup>
+import { useRouter } from 'vue-router'
+
+import Button from 'primevue/button'
 import Toast from 'primevue/toast'
+
+import { useAuthStore } from '../stores/auth.store'
+
+const router = useRouter()
+const authStore = useAuthStore()
+
+function logout() {
+    authStore.logout()
+
+    router.push({
+        name: 'login'
+    })
+}
 </script>
 
 <template>
@@ -7,9 +23,21 @@ import Toast from 'primevue/toast'
 
     <div class="layout">
         <header class="layout-header">
-            <h1>
-                ToDo App
-            </h1>
+            <div>
+                <h1>
+                    ToDo App
+                </h1>
+                <p v-if="authStore.user">
+                    Hello, {{ authStore.user.username }}
+                </p>
+            </div>
+            
+            <Button 
+                v-if="authStore.isAuthenticated"
+                label="Logout"
+                severity="secondary"
+                @click="logout"
+            />
         </header>
 
         <main class="layout-main">
@@ -28,10 +56,18 @@ import Toast from 'primevue/toast'
 .layout-header {
     max-width: 960px;
     margin: 0 auto 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .layout-header h1 {
     margin: 0;
+}
+
+.layout-header p {
+    margin: 4px 0 0;
+    color: #6b7280;
 }
 
 .layout-main {
