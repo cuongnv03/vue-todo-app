@@ -1,9 +1,16 @@
 const publicUserSchema = {
     type: 'object',
+    required: ['id', 'username'],
+    additionalProperties: false,
     properties: { 
         id: { type: 'number' }, 
         username: { type: 'string' } 
     }
+}
+
+const successSchema = {
+    type: 'boolean',
+    const: true
 }
 
 export const registerSchema = {
@@ -19,9 +26,19 @@ export const registerSchema = {
     response: {
         201: {
             type: 'object',
+            required: ['success', 'message', 'data'],
+            additionalProperties: false,
             properties: { 
-                message: { type: 'string' }, 
-                user: publicUserSchema 
+                success: successSchema,
+                message: { type: 'string' },
+                data: {
+                    type: 'object',
+                    required: ['user'],
+                    additionalProperties: false,
+                    properties: {
+                        user: publicUserSchema
+                    }
+                }
             }
         }
     }
@@ -40,9 +57,19 @@ export const loginSchema = {
     response: {
         200: {
             type: 'object',
+            required: ['success', 'data'],
+            additionalProperties: false,
             properties: { 
-                token: { type: 'string' }, 
-                user: publicUserSchema 
+                success: successSchema,
+                data: {
+                    type: 'object',
+                    required: ['token', 'user'],
+                    additionalProperties: false,
+                    properties: {
+                        token: { type: 'string' },
+                        user: publicUserSchema
+                    }
+                }
             }
         }
     },

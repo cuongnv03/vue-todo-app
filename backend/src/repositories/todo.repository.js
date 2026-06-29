@@ -21,19 +21,12 @@ export async function findTodoByIdAndUserId(todoId, userId) {
 }
 
 export async function createTodoRecord({ userId, title, isCompleted = false }) {
-    await db('todos').insert({
-        user_id: userId,
-        title,
-        is_completed: isCompleted
-    })
-
-    const row = await db('todos')
-        .where({
+    const [row] = await db('todos')
+        .insert({
             user_id: userId,
-            title
-        })
-        .orderBy('created_at', 'desc')
-        .first()
+            title,
+            is_completed: isCompleted
+        }, ['id', 'user_id', 'title', 'is_completed', 'created_at', 'updated_at'])
 
     return mapTodoRow(row)
 }

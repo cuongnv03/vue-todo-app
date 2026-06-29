@@ -28,7 +28,7 @@ export const useAuthStore = defineStore('auth', {
             
             try {
                 const response = await api.post('/auth/register', payload)
-                return response.data
+                return response.data.data
             } catch (error) {
                 this.error = error
                 throw error
@@ -43,7 +43,7 @@ export const useAuthStore = defineStore('auth', {
             try {
                 const response = await api.post('/auth/login', payload)
 
-                const { token, user } = response.data
+                const { token, user } = response.data.data
 
                 this.token = token
                 this.user = user
@@ -51,7 +51,7 @@ export const useAuthStore = defineStore('auth', {
                 saveToken(token)
                 saveUser(user)
 
-                return response.data
+                return response.data.data
             } catch (error) {
                 this.error = error
                 throw error

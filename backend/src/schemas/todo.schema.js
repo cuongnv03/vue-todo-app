@@ -1,5 +1,7 @@
 const todoResponseSchema = {
     type: 'object',
+    required: ['id', 'userId', 'title', 'isCompleted', 'createdAt', 'updatedAt'],
+    additionalProperties: false,
     properties: {
         id: { type: 'number' },
         userId: { type: 'number' },
@@ -8,6 +10,11 @@ const todoResponseSchema = {
         createdAt: { type: 'string' },
         updatedAt: { type: 'string' }
     }
+}
+
+const successSchema = {
+    type: 'boolean',
+    const: true
 }
 
 const todoIdParamsSchema = {
@@ -25,10 +32,21 @@ export const getTodosSchema = {
     response: {
         200: {
             type: 'object',
+            required: ['success', 'data', 'meta'],
+            additionalProperties: false,
             properties: {
+                success: successSchema,
                 data: {
                     type: 'array',
                     items: todoResponseSchema
+                },
+                meta: {
+                    type: 'object',
+                    required: ['count'],
+                    additionalProperties: false,
+                    properties: {
+                        count: { type: 'number' }
+                    }
                 }
             }
         }
@@ -54,7 +72,10 @@ export const createTodoSchema = {
     response: {
         201: {
             type: 'object',
+            required: ['success', 'data'],
+            additionalProperties: false,
             properties: {
+                success: successSchema,
                 data: todoResponseSchema
             }
         }
@@ -80,7 +101,10 @@ export const updateTodoSchema = {
     response: {
         200: {
             type: 'object',
+            required: ['success', 'data'],
+            additionalProperties: false,
             properties: {
+                success: successSchema,
                 data: todoResponseSchema
             }
         }

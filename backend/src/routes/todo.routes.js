@@ -11,6 +11,7 @@ import {
     updateTodo,
     deleteTodo
  } from '../services/todo.service.js'
+import { successResponse } from '../utils/responses.js'
 
 export async function todoRoutes(fastify) {
     fastify.addHook('preHandler', fastify.authenticate)
@@ -22,9 +23,11 @@ export async function todoRoutes(fastify) {
 
         const todos = await getTodosByUserId(userId)
 
-        return {
-            data: todos
-        }
+        return successResponse(todos, {
+            meta: {
+                count: todos.length
+            }
+        })
     })
 
     fastify.post('/', {
@@ -35,7 +38,7 @@ export async function todoRoutes(fastify) {
         const todo = await createTodo(userId, request.body)
 
         return reply.code(201).send({
-            data: todo
+            ...successResponse(todo)
         })
     })
 
@@ -47,9 +50,7 @@ export async function todoRoutes(fastify) {
         
         const todo = await updateTodo(userId, todoId, request.body)
 
-        return {
-            data: todo
-        }
+        return successResponse(todo)
     })
 
     fastify.delete('/:id', {

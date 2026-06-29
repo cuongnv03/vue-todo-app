@@ -1,6 +1,8 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
 import { AppError } from './utils/errors.js'
+import { errorResponse, successResponse } from './utils/responses.js'
+import { env } from './config/env.js'
 
 import { jwtPlugin } from './plugins/jwt.js'
 import { authPlugin } from './plugins/auth.js'
@@ -14,7 +16,7 @@ export async function buildApp() {
     })
 
     await fastify.register(cors, {
-        origin: true,
+        origin: env.corsOrigins,
         methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization']
     })
@@ -25,28 +27,27 @@ export async function buildApp() {
     fastify.setErrorHandler((error, request, reply) => {
         if (error.validation) {
             return reply.code(400).send({
-                message: 'Validation error',
-                details: error.validation
+                ...errorResponse('VALIDATION_ERROR', 'Validation error', error.validation)
             })
         }
 
         if (error instanceof AppError) {
             return reply.code(error.statusCode).send({
-                message: error.message
+                ...errorResponse(error.code, error.message)
             })
         }
 
         request.log.error(error)
 
         return reply.code(500).send({
-            message: 'Internal server error'
+            ...errorResponse('INTERNAL_SERVER_ERROR', 'Internal server error')
         })
     })
 
     fastify.get('/health', async () => {
-        return {
+        return successResponse({
             status: 'OK'
-        }
+        })
     })
 
     await fastify.register(authRoutes, {

@@ -11,6 +11,7 @@ import {
     ConflictError,
     UnauthorizedError
  } from "../utils/errors.js"
+import { isUniqueConstraintError } from "../utils/database.js"
 
 export async function registerUser({ username, password }) {
     const normalizedUsername = username.trim()
@@ -22,10 +23,20 @@ export async function registerUser({ username, password }) {
 
     const passwordHash = await hashPassword(password)
 
-    const user = await createUser({
-        username: normalizedUsername,
-        passwordHash
-    })
+    let user
+
+    try {
+        user = await createUser({
+            username: normalizedUsername,
+            passwordHash
+        })
+    } catch (error) {
+        if (isUniqueConstraintError(error)) {
+            throw new ConflictError('Username already exists')
+        }
+
+        throw error
+    }
 
     return mapPublicUser(user)
 }

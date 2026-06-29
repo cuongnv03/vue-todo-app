@@ -1,4 +1,5 @@
 import fp from 'fastify-plugin'
+import { errorResponse } from '../utils/responses.js'
 
 async function registerAuth(fastify) {
     fastify.decorate('authenticate', async function authenticate(request, reply) {
@@ -10,7 +11,7 @@ async function registerAuth(fastify) {
             }
         } catch {
             return reply.code(401).send({
-                message: 'Unauthorized'
+                ...errorResponse('UNAUTHORIZED', 'Unauthorized')
             })
         }
     })

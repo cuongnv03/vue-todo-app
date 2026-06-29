@@ -6,6 +6,7 @@ import {
     registerUser,
     loginUser
  } from '../services/auth.service.js'
+import { successResponse } from '../utils/responses.js'
 
 export async function authRoutes(fastify) {
     fastify.post('/register', {
@@ -14,8 +15,10 @@ export async function authRoutes(fastify) {
         const user = await registerUser(request.body)
 
         return reply.code(201).send({
-            message: 'User registered successfully',
-            user
+            ...successResponse(
+                { user },
+                { message: 'User registered successfully' }
+            )
         })
     })
 
@@ -28,9 +31,9 @@ export async function authRoutes(fastify) {
             userId: user.id
         })
 
-        return {
+        return successResponse({
             token,
             user
-        }
+        })
     })
 }

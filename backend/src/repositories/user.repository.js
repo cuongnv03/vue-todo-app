@@ -18,14 +18,11 @@ export async function findUserById(id) {
 }
 
 export async function createUser({ username, passwordHash }) {
-    await db('users').insert({
-        username,
-        password_hash: passwordHash
-    })
-
-    const row = await db('users')
-        .where({ username })
-        .first()
+    const [row] = await db('users')
+        .insert({
+            username,
+            password_hash: passwordHash
+        }, ['id', 'username', 'password_hash', 'created_at', 'updated_at'])
 
     return mapUserRow(row)
 }
